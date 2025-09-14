@@ -20,7 +20,8 @@ CREATE TABLE Cities (
     city_id INTEGER PRIMARY KEY NOT NULL,
     city_name VARCHAR2(100) NOT NULL,
     state_name VARCHAR2(100) NOT NULL,
-    country_name VARCHAR2(100) NOT NULL
+    country_name VARCHAR2(100) NOT NULL,
+    CONSTRAINT unique_city UNIQUE (city_name, state_name, country_name)
 );
 
 CREATE TABLE User_Current_Cities (
@@ -53,7 +54,8 @@ CREATE TABLE Programs (
     program_id INTEGER PRIMARY KEY NOT NULL,
     institution VARCHAR2(100) NOT NULL,
     concentration VARCHAR2(100) NOT NULL,
-    degree VARCHAR2(100) NOT NULL
+    degree VARCHAR2(100) NOT NULL,
+    CONSTRAINT unique_program UNIQUE (institution, concentration, degree)
 );
 
 CREATE TABLE Education (
