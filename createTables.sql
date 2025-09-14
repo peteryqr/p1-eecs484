@@ -6,22 +6,22 @@ CREATE TABLE Users (
     month_of_birth INTEGER,
     day_of_birth INTEGER,
     gender VARCHAR2(100)
-)
+);
 
 CREATE TABLE Friends (
-    user_id1 INTEGER NOT NULL,
-    user_id2 INTEGER NOT NULL,
-    PRIMARY KEY (user_id1, user_id2),
-    FOREIGN KEY (user_id1) REFERENCES Users(user_id),
-    FOREIGN KEY (user_id2) REFERENCES Users(user_id)
-)
+    user1_id INTEGER NOT NULL,
+    user2_id INTEGER NOT NULL,
+    PRIMARY KEY (user1_id, user2_id),
+    FOREIGN KEY (user1_id) REFERENCES Users(user_id),
+    FOREIGN KEY (user2_id) REFERENCES Users(user_id)
+);
 
 CREATE TABLE Cities (
     city_id INTEGER PRIMARY KEY NOT NULL,
     city_name VARCHAR2(100) NOT NULL,
     state_name VARCHAR2(100) NOT NULL,
     country_name VARCHAR2(100) NOT NULL
-)
+);
 
 CREATE TABLE User_Current_Cities (
     user_id INTEGER NOT NULL,
@@ -29,7 +29,7 @@ CREATE TABLE User_Current_Cities (
     PRIMARY KEY (user_id, current_city_id),
     FOREIGN KEY (user_id) REFERENCES Users(user_id),
     FOREIGN KEY (current_city_id) REFERENCES Cities(city_id)
-)
+);
 
 CREATE TABLE User_Hometown_Cities (
     user_id INTEGER NOT NULL,
@@ -37,7 +37,7 @@ CREATE TABLE User_Hometown_Cities (
     PRIMARY KEY (user_id, hometown_city_id),
     FOREIGN KEY (user_id) REFERENCES Users(user_id),
     FOREIGN KEY (hometown_city_id) REFERENCES Cities(city_id)
-)
+);
 
 CREATE TABLE Messages (
     message_id INTEGER PRIMARY KEY NOT NULL,
@@ -47,14 +47,14 @@ CREATE TABLE Messages (
     sent_time TIMESTAMP NOT NULL,
     FOREIGN KEY (sender_id) REFERENCES Users(user_id),
     FOREIGN KEY (receiver_id) REFERENCES Users(user_id)
-)
+);
 
 CREATE TABLE Programs (
     program_id INTEGER PRIMARY KEY NOT NULL,
     institution VARCHAR2(100) NOT NULL,
     concentration VARCHAR2(100) NOT NULL,
     degree VARCHAR2(100) NOT NULL
-)
+);
 
 CREATE TABLE Education (
     user_id INTEGER NOT NULL,
@@ -63,7 +63,7 @@ CREATE TABLE Education (
     PRIMARY KEY (user_id, program_id),
     FOREIGN KEY (user_id) REFERENCES Users(user_id),
     FOREIGN KEY (program_id) REFERENCES Programs(program_id)
-)
+);
 
 CREATE TABLE User_Events (
     event_id INTEGER PRIMARY KEY NOT NULL,
@@ -80,7 +80,7 @@ CREATE TABLE User_Events (
     event_end_time TIMESTAMP,
     FOREIGN KEY (event_creator_id) REFERENCES Users(user_id),
     FOREIGN KEY (event_city_id) REFERENCES Cities(city_id)
-)
+);
 
 CREATE TABLE Participants (
     event_id INTEGER NOT NULL,
@@ -91,7 +91,7 @@ CREATE TABLE Participants (
     FOREIGN KEY (user_id) REFERENCES Users(user_id),
     CONSTRAINT check_confirmation_status
     CHECK (confirmation IN ('Attending', 'Unsure', 'Declines', 'Not_Replied'))
-)
+);
 
 CREATE TABLE Albums (
     album_id INTEGER PRIMARY KEY NOT NULL,
@@ -105,7 +105,7 @@ CREATE TABLE Albums (
     FOREIGN KEY (album_owner_id) REFERENCES Users(user_id),
     CONSTRAINT check_visibility
     CHECK (album_visibility IN ('Everyone', 'Friends', 'Friends_Of_Friends', 'Myself'))
-)
+);
 
 CREATE TABLE Photos (
     photo_id INTEGER PRIMARY KEY NOT NULL,
@@ -114,12 +114,12 @@ CREATE TABLE Photos (
     photo_created_time TIMESTAMP NOT NULL,
     photo_modified_time TIMESTAMP,
     photo_link VARCHAR2(2000) NOT NULL,
-    FOREIGN KEY (album_id) REFERENCES Albums(album_id)
-)
+    FOREIGN KEY (album_id) REFERENCES Albums(album_id) ON DELETE CASCADE
+);
 
 ALTER TABLE Albums
 ADD CONSTRAINT cover_photo_id_check
-FOREIGN KEY (cover_photo_id) REFERENCES Photos(photo_id)
+FOREIGN KEY (cover_photo_id) REFERENCES Photos(photo_id) ON DELETE CASCADE
 INITIALLY DEFERRED DEFERRABLE;
 
 CREATE TABLE Tags (
@@ -131,7 +131,7 @@ CREATE TABLE Tags (
     PRIMARY KEY (tag_photo_id, tag_subject_id),
     FOREIGN KEY (tag_photo_id) REFERENCES Photos(photo_id),
     FOREIGN KEY (tag_subject_id) REFERENCES Users(user_id)
-)
+);
 
 CREATE TRIGGER Order_Friend_Pairs
     BEFORE INSERT ON Friends
