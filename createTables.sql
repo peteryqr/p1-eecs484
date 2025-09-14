@@ -146,4 +146,58 @@ CREATE TRIGGER Order_Friend_Pairs
         END;
 /
 
+CREATE SEQUENCE city_id_seq
+    START WITH 1
+    INCREMENT BY 1;
+CREATE TRIGGER city_id_trigger
+    BEFORE INSERT ON Cities
+    FOR EACH ROW
+        BEGIN
+            SELECT city_id_seq.NEXTVAL INTO :NEW.city_id FROM DUAL;
+        END;
+/
 
+CREATE SEQUENCE program_id_seq
+    START WITH 1
+    INCREMENT BY 1;
+CREATE TRIGGER program_id_trigger
+    BEFORE INSERT ON Programs
+    FOR EACH ROW
+        BEGIN
+            SELECT program_id_seq.NEXTVAL INTO :NEW.program_id FROM DUAL;
+        END;
+/
+
+CREATE SEQUENCE event_id_seq
+    START WITH 1
+    INCREMENT BY 1;
+CREATE TRIGGER event_id_trigger
+    BEFORE INSERT ON User_Events
+    FOR EACH ROW
+        BEGIN
+            SELECT event_id_seq.NEXTVAL INTO :NEW.event_id FROM DUAL;
+        END;
+/
+
+
+CREATE SEQUENCE album_id_seq
+    START WITH 1
+    INCREMENT BY 1;
+CREATE TRIGGER album_id_trigger
+    BEFORE INSERT ON Albums
+    FOR EACH ROW
+        BEGIN
+            SELECT album_id_seq.NEXTVAL INTO :NEW.album_id FROM DUAL;
+        END;
+/
+
+CREATE SEQUENCE photo_id_seq
+    START WITH 1
+    INCREMENT BY 1;
+CREATE TRIGGER photo_id_trigger
+    BEFORE INSERT ON Photos
+    FOR EACH ROW
+        BEGIN
+            SELECT photo_id_seq.NEXTVAL INTO :NEW.photo_id FROM DUAL;
+        END;
+/
