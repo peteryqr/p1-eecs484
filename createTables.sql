@@ -115,13 +115,17 @@ CREATE TABLE Photos (
     photo_caption VARCHAR2(2000),
     photo_created_time TIMESTAMP NOT NULL,
     photo_modified_time TIMESTAMP,
-    photo_link VARCHAR2(2000) NOT NULL,
-    FOREIGN KEY (album_id) REFERENCES Albums(album_id) ON DELETE CASCADE
+    photo_link VARCHAR2(2000) NOT NULL
 );
 
 ALTER TABLE Albums
 ADD CONSTRAINT cover_photo_id_check
 FOREIGN KEY (cover_photo_id) REFERENCES Photos(photo_id) ON DELETE CASCADE
+INITIALLY DEFERRED DEFERRABLE;
+
+ALTER TABLE Photos
+ADD CONSTRAINT album_id_check
+FOREIGN KEY (album_id) REFERENCES Albums(album_id) ON DELETE CASCADE
 INITIALLY DEFERRED DEFERRABLE;
 
 CREATE TABLE Tags (

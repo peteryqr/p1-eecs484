@@ -65,16 +65,20 @@ JOIN Programs p
 
 -- Insert friends
 INSERT INTO Friends (user1_id, user2_id)
-SELECT DISTINCT LEAST(puf.user1_id, puf.user2_id), GREATEST(puf.user1_id, puf.user2_id)
-FROM project1.Public_Are_Friends puf
-JOIN Users u1 ON puf.user1_id = u1.user_id
-JOIN Users u2 ON puf.user2_id = u2.user_id 
+SELECT DISTINCT u1, u2
+    FROM (
+        SELECT puf.user1_id AS u1, puf.user2_id AS u2
+        FROM project1.Public_Are_Friends puf
+        UNION
+        SELECT puf.user2_id AS u1, puf.user1_id AS u2
+        FROM project1.Public_Are_Friends puf
+    ) AS pairs
+WHERE u1 < u2
 
 -- Insert albums
 INSERT INTO Albums (album_id, album_owner_id, album_name, album_created_time, album_modified_time, album_link, album_visibility, cover_photo_id)
 SELECT DISTINCT album_id, owner_id, album_name, album_created_time, album_modified_time, album_link, album_visibility, cover_photo_id
-FROM project1.Public_Photo_Information
-GROUP BY album_id, owner_id, album_name, album_created_time, album_modified_time, album_link, album_visibility, cover_photo_id;
+FROM project1.Public_Photo_Information;
 
 -- Insert photos
 INSERT INTO Photos (photo_id, album_id, photo_caption, photo_created_time, photo_modified_time, photo_link)
