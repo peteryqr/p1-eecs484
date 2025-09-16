@@ -27,7 +27,7 @@ CREATE TABLE Cities (
 CREATE TABLE User_Current_Cities (
     user_id INTEGER NOT NULL,
     current_city_id INTEGER NOT NULL,
-    PRIMARY KEY (user_id, current_city_id),
+    PRIMARY KEY (user_id),
     FOREIGN KEY (user_id) REFERENCES Users(user_id),
     FOREIGN KEY (current_city_id) REFERENCES Cities(city_id)
 );
@@ -35,7 +35,7 @@ CREATE TABLE User_Current_Cities (
 CREATE TABLE User_Hometown_Cities (
     user_id INTEGER NOT NULL,
     hometown_city_id INTEGER NOT NULL,
-    PRIMARY KEY (user_id, hometown_city_id),
+    PRIMARY KEY (user_id),
     FOREIGN KEY (user_id) REFERENCES Users(user_id),
     FOREIGN KEY (hometown_city_id) REFERENCES Cities(city_id)
 );
@@ -112,7 +112,7 @@ CREATE TABLE Albums (
 CREATE TABLE Photos (
     photo_id INTEGER PRIMARY KEY NOT NULL,
     album_id INTEGER NOT NULL,
-    photo_caption VARCHAR2(100),
+    photo_caption VARCHAR2(2000),
     photo_created_time TIMESTAMP NOT NULL,
     photo_modified_time TIMESTAMP,
     photo_link VARCHAR2(2000) NOT NULL,
@@ -170,36 +170,36 @@ CREATE TRIGGER program_id_trigger
         END;
 /
 
-CREATE SEQUENCE event_id_seq
-    START WITH 1
-    INCREMENT BY 1;
-CREATE TRIGGER event_id_trigger
-    BEFORE INSERT ON User_Events
-    FOR EACH ROW
-        BEGIN
-            SELECT event_id_seq.NEXTVAL INTO :NEW.event_id FROM DUAL;
-        END;
-/
+-- CREATE SEQUENCE event_id_seq
+--     START WITH 1
+--     INCREMENT BY 1;
+-- CREATE TRIGGER event_id_trigger
+--     BEFORE INSERT ON User_Events
+--     FOR EACH ROW
+--         BEGIN
+--             SELECT event_id_seq.NEXTVAL INTO :NEW.event_id FROM DUAL;
+--         END;
+-- /
 
 
-CREATE SEQUENCE album_id_seq
-    START WITH 1
-    INCREMENT BY 1;
-CREATE TRIGGER album_id_trigger
-    BEFORE INSERT ON Albums
-    FOR EACH ROW
-        BEGIN
-            SELECT album_id_seq.NEXTVAL INTO :NEW.album_id FROM DUAL;
-        END;
-/
+-- CREATE SEQUENCE album_id_seq
+--     START WITH 1
+--     INCREMENT BY 1;
+-- CREATE TRIGGER album_id_trigger
+--     BEFORE INSERT ON Albums
+--     FOR EACH ROW
+--         BEGIN
+--             SELECT album_id_seq.NEXTVAL INTO :NEW.album_id FROM DUAL;
+--         END;
+-- /
 
-CREATE SEQUENCE photo_id_seq
-    START WITH 1
-    INCREMENT BY 1;
-CREATE TRIGGER photo_id_trigger
-    BEFORE INSERT ON Photos
-    FOR EACH ROW
-        BEGIN
-            SELECT photo_id_seq.NEXTVAL INTO :NEW.photo_id FROM DUAL;
-        END;
-/
+-- CREATE SEQUENCE photo_id_seq
+--     START WITH 1
+--     INCREMENT BY 1;
+-- CREATE TRIGGER photo_id_trigger
+--     BEFORE INSERT ON Photos
+--     FOR EACH ROW
+--         BEGIN
+--             SELECT photo_id_seq.NEXTVAL INTO :NEW.photo_id FROM DUAL;
+--         END;
+-- /
