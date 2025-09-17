@@ -34,9 +34,9 @@ SELECT
     hc.state_name AS hometown_state,
     hc.country_name AS hometown_country,
     p.institution AS institution_name,
+    e.program_year, 
     p.concentration AS program_concentration,
-    p.degree AS program_degree,
-    e.program_year
+    p.degree AS program_degree
 FROM Users u
 LEFT JOIN User_Current_Cities ucc
     ON u.user_id = ucc.user_id
@@ -52,7 +52,7 @@ LEFT JOIN Programs p
     ON e.program_id = p.program_id;
 
 
-CREATE VIEW View_Are_Friends(user1_id, user2_id) 
+CREATE VIEW View_Are_Friends
 AS
 SELECT user1_id, user2_id
 FROM Friends;
@@ -61,21 +61,21 @@ FROM Friends;
 CREATE VIEW View_Photo_Information
 AS
 SELECT
-    p.photo_id,
     a.album_id, 
     a.album_owner_id AS owner_id,
+    a.cover_photo_id,
     a.album_name,
     a.album_created_time,
     a.album_modified_time,
     a.album_link,
     a.album_visibility,
-    a.cover_photo_id,
+    p.photo_id,
     p.photo_caption,
     p.photo_created_time,
     p.photo_modified_time, 
     p.photo_link
 FROM Photos p
-JOIN Albums a
+LEFT JOIN Albums a
     ON p.album_id = a.album_id;
 
 
@@ -97,7 +97,7 @@ SELECT
     ue.event_start_time,
     ue.event_end_time
 FROM User_Events ue
-JOIN Cities c
+LEFT JOIN Cities c
     ON ue.event_city_id = c.city_id;
 
 CREATE VIEW View_Tag_Information
@@ -108,4 +108,4 @@ SELECT
     tag_created_time,
     tag_x AS tag_x_coordinate,
     tag_y AS tag_y_coordinate
-FROM Tags t
+FROM Tags t;

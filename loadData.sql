@@ -65,15 +65,10 @@ JOIN Programs p
 
 -- Insert friends
 INSERT INTO Friends (user1_id, user2_id)
-SELECT DISTINCT u1, u2
-    FROM (
-        SELECT puf.user1_id AS u1, puf.user2_id AS u2
-        FROM project1.Public_Are_Friends puf
-        UNION
-        SELECT puf.user2_id AS u1, puf.user1_id AS u2
-        FROM project1.Public_Are_Friends puf
-    ) AS pairs
-WHERE u1 < u2
+SELECT DISTINCT
+    LEAST (user1_id, user2_id) as user1_id,
+    GREATEST (user1_id, user2_id) as user2_id
+FROM project1.Public_Are_Friends;
 
 SET AUTOCOMMIT OFF;
 -- Insert albums
